@@ -27,14 +27,14 @@ import StatusBadge from "@/components/common/StatusBadge";
 import PageTransition from "@/components/ui/PageTransition";
 
 interface UserData {
-  username: string;
+  nome: string;
   email: string;
-  password: string;
+  senha: string;
 }
 
 const UsersPage: React.FC = () => {
   const [newUser, setNewUser] = useState({
-    username: "",
+    nome: "",
     email: "",
     senha: "",
   });
@@ -71,7 +71,7 @@ const UsersPage: React.FC = () => {
     mutationFn: usersAPI.create,
     onSuccess: () => {
       toast.success("Usuário criado com sucesso");
-      setNewUser({ username: "", email: "", senha: "" });
+      setNewUser({ nome: "", email: "", senha: "" }); 
       setIsDialogOpen(false);
       refetchActiveUsers();
     },
@@ -79,18 +79,23 @@ const UsersPage: React.FC = () => {
 
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newUser.username || !newUser.email || !newUser.senha) {
+    if (!newUser.nome || !newUser.email || !newUser.senha) {
       toast.error("Preencha todos os campos");
       return;
     }
     
     const userData: UserData = {
-      username: newUser.username,
+      nome: newUser.nome,
       email: newUser.email,
-      password: newUser.senha,
+      senha: newUser.senha,
     };
     
-    await createUserMutation.mutate(userData);
+    try {
+      await createUserMutation.mutate(userData);
+    } catch (error) {
+      console.error("Erro ao criar usuário:", error);
+      toast.error("Erro ao criar usuário. Verifique os dados e tente novamente.");
+    }
   };
 
   const handleToggleStatus = async (userId: string) => {
@@ -192,12 +197,12 @@ const UsersPage: React.FC = () => {
               <form onSubmit={handleCreateUser}>
                 <div className="space-y-4 py-4">
                   <div className="space-y-2">
-                    <Label htmlFor="username">Nome</Label>
+                    <Label htmlFor="nome">Nome</Label>
                     <Input
-                      id="username"
-                      name="username"
+                      id="nome"
+                      name="nome"
                       placeholder="Nome completo"
-                      value={newUser.username}
+                      value={newUser.nome}
                       onChange={handleInputChange}
                       required
                     />
