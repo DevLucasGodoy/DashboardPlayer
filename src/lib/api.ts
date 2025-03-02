@@ -43,7 +43,6 @@ interface UserData {
 }
 
 interface TypeData {
-  name: string;
   description?: string;
 }
 
