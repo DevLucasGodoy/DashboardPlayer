@@ -28,11 +28,9 @@ import PageTransition from "@/components/ui/PageTransition";
 
 const TypesPage: React.FC = () => {
   const [newType, setNewType] = useState({
-    name: "",
     descricao: "",
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const queryClient = useQueryClient();
 
   const {
     data: activeTypes,
@@ -65,7 +63,7 @@ const TypesPage: React.FC = () => {
     mutationFn: typesAPI.create,
     onSuccess: () => {
       toast.success("Tipo criado com sucesso");
-      setNewType({ name: "", descricao: "" });
+      setNewType({descricao: "" });
       setIsDialogOpen(false);
       refetchActiveTypes();
     },
@@ -73,7 +71,7 @@ const TypesPage: React.FC = () => {
 
   const handleCreateType = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newType.name || !newType.descricao) {
+    if (!newType.descricao) {
       toast.error("Preencha todos os campos");
       return;
     }
