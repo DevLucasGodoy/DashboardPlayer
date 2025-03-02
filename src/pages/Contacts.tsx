@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { contactsAPI, typesAPI } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,22 +34,20 @@ import {
 } from "@/components/ui/select";
 
 interface ContactData {
-  name: string;
-  username: string;
-  tipo_id: string;
-  telefone: string;
-  idade: number;
+  idtipo: string;
+  idusuario: string;
+  nome: string;
+  valor: string;
 }
 
 const ContactsPage: React.FC = () => {
   const [newContact, setNewContact] = useState({
+    idtipo: "",
+    idusuario: "",
     nome: "",
-    tipo_id: "",
-    telefone: "",
-    idade: "",
+    valor: "",
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const queryClient = useQueryClient();
 
   const {
     data: activeContacts,
@@ -87,7 +85,7 @@ const ContactsPage: React.FC = () => {
     mutationFn: contactsAPI.create,
     onSuccess: () => {
       toast.success("Contato criado com sucesso");
-      setNewContact({ nome: "", tipo_id: "", telefone: "", idade: "" });
+      setNewContact({ idtipo: "", idusuario: "", nome: "", valor: "" });
       setIsDialogOpen(false);
       refetchActiveContacts();
     },
@@ -95,17 +93,16 @@ const ContactsPage: React.FC = () => {
 
   const handleCreateContact = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newContact.nome || !newContact.tipo_id || !newContact.telefone || !newContact.idade) {
+    if (!newContact.idtipo || !newContact.idusuario || !newContact.nome || !newContact.valor) {
       toast.error("Preencha todos os campos");
       return;
     }
     
     const contactData: ContactData = {
-      name: newContact.nome,
-      username: newContact.nome.toLowerCase().replace(/\s+/g, '.'), 
-      tipo_id: newContact.tipo_id,
-      telefone: newContact.telefone,
-      idade: parseInt(newContact.idade),
+      idtipo : newContact.idtipo,
+      idusuario: newContact.idusuario, 
+      nome: newContact.nome,
+      valor: newContact.valor,
     };
     
     await createContactMutation.mutate(contactData);
@@ -145,23 +142,19 @@ const ContactsPage: React.FC = () => {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-muted/50">
-                <th className="py-3 px-4 text-left">ID</th>
+                <th className="py-3 px-4 text-left">ID do Tipo</th>
+                <th className="py-3 px-4 text-left">ID do Usuário</th>
                 <th className="py-3 px-4 text-left">Nome</th>
-                <th className="py-3 px-4 text-left">Tipo</th>
-                <th className="py-3 px-4 text-left">Telefone</th>
-                <th className="py-3 px-4 text-left">Idade</th>
-                <th className="py-3 px-4 text-left">Status</th>
+                <th className="py-3 px-4 text-left">Valor</th>
                 <th className="py-3 px-4 text-right">Ações</th>
               </tr>
             </thead>
             <tbody>
               {data.map((contact) => (
                 <tr key={contact.id} className="border-b hover:bg-muted/50">
-                  <td className="py-3 px-4">{contact.id}</td>
+                  <td className="py-3 px-4">{contact.idtipo}</td>
+                  <td className="py-3 px-4">{contact.idusuario}</td>
                   <td className="py-3 px-4">{contact.nome}</td>
-                  <td className="py-3 px-4">{contact.tipo?.nome || '-'}</td>
-                  <td className="py-3 px-4">{contact.telefone}</td>
-                  <td className="py-3 px-4">{contact.idade}</td>
                   <td className="py-3 px-4">
                     <StatusBadge isActive={isActive} />
                   </td>
@@ -214,62 +207,45 @@ const ContactsPage: React.FC = () => {
               <form onSubmit={handleCreateContact}>
                 <div className="space-y-4 py-4">
                   <div className="space-y-2">
+                    <Label htmlFor="nome">ID do Tipo</Label>
+                    <Input
+                      id="idtipo"
+                      name="idtipo"
+                      placeholder="ID do Tipo"
+                      value={newContact.idtipo}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="idusuario">ID do Usuário</Label>
+                    <Input
+                      id="idusuario"
+                      name="idusuario"
+                      placeholder="ID do Usuário"
+                      value={newContact.idusuario}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="nome">Nome</Label>
                     <Input
                       id="nome"
                       name="nome"
-                      placeholder="Nome do jogador"
+                      placeholder="Nome"
                       value={newContact.nome}
                       onChange={handleInputChange}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="tipo_id">Tipo</Label>
-                    <Select
-                      value={newContact.tipo_id}
-                      onValueChange={(value) => 
-                        setNewContact({ ...newContact, tipo_id: value })
-                      }
-                      required
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione um tipo" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {typesLoading ? (
-                          <SelectItem value="" disabled>
-                            Carregando tipos...
-                          </SelectItem>
-                        ) : (
-                          types?.map((type) => (
-                            <SelectItem key={type.id} value={type.id}>
-                              {type.nome}
-                            </SelectItem>
-                          ))
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="telefone">Telefone</Label>
+                    <Label htmlFor="valor">Valor</Label>
                     <Input
-                      id="telefone"
-                      name="telefone"
-                      placeholder="(00) 00000-0000"
-                      value={newContact.telefone}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="idade">Idade</Label>
-                    <Input
-                      id="idade"
-                      name="idade"
-                      type="number"
-                      placeholder="Idade do jogador"
-                      value={newContact.idade}
+                      id="valor"
+                      name="valor"
+                      placeholder="Valor"
+                      value={newContact.valor}
                       onChange={handleInputChange}
                       required
                     />
