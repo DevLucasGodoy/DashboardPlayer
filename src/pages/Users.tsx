@@ -27,15 +27,15 @@ import StatusBadge from "@/components/common/StatusBadge";
 import PageTransition from "@/components/ui/PageTransition";
 
 interface UserData {
-  nome: string;
   username: string;
+  email: string;
   password: string;
 }
 
 const UsersPage: React.FC = () => {
   const [newUser, setNewUser] = useState({
-    nome: "",
     username: "",
+    email: "",
     senha: "",
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -71,7 +71,7 @@ const UsersPage: React.FC = () => {
     mutationFn: usersAPI.create,
     onSuccess: () => {
       toast.success("Usuário criado com sucesso");
-      setNewUser({ nome: "", username: "", senha: "" });
+      setNewUser({ username: "", email: "", senha: "" });
       setIsDialogOpen(false);
       refetchActiveUsers();
     },
@@ -79,14 +79,14 @@ const UsersPage: React.FC = () => {
 
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newUser.nome || !newUser.username || !newUser.senha) {
+    if (!newUser.username || !newUser.email || !newUser.senha) {
       toast.error("Preencha todos os campos");
       return;
     }
     
     const userData: UserData = {
-      nome: newUser.nome,
       username: newUser.username,
+      email: newUser.email,
       password: newUser.senha,
     };
     
@@ -129,7 +129,7 @@ const UsersPage: React.FC = () => {
               <tr className="border-b bg-muted/50">
                 <th className="py-3 px-4 text-left">ID</th>
                 <th className="py-3 px-4 text-left">Nome</th>
-                <th className="py-3 px-4 text-left">Username</th>
+                <th className="py-3 px-4 text-left">email</th>
                 <th className="py-3 px-4 text-left">Status</th>
                 <th className="py-3 px-4 text-right">Ações</th>
               </tr>
@@ -139,7 +139,7 @@ const UsersPage: React.FC = () => {
                 <tr key={user.id} className="border-b hover:bg-muted/50">
                   <td className="py-3 px-4">{user.id}</td>
                   <td className="py-3 px-4">{user.nome}</td>
-                  <td className="py-3 px-4">{user.username}</td>
+                  <td className="py-3 px-4">{user.email}</td>
                   <td className="py-3 px-4">
                     <StatusBadge isActive={isActive} />
                   </td>
@@ -192,24 +192,24 @@ const UsersPage: React.FC = () => {
               <form onSubmit={handleCreateUser}>
                 <div className="space-y-4 py-4">
                   <div className="space-y-2">
-                    <Label htmlFor="nome">Nome</Label>
+                    <Label htmlFor="username">Nome</Label>
                     <Input
-                      id="nome"
-                      name="nome"
+                      id="username"
+                      name="username"
                       placeholder="Nome completo"
-                      value={newUser.nome}
+                      value={newUser.username}
                       onChange={handleInputChange}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="username">E-mail</Label>
+                    <Label htmlFor="email">E-mail</Label>
                     <Input
-                      id="username"
-                      name="username"
+                      id="email"
+                      name="email"
                       type="email"
                       placeholder="email@exemplo.com"
-                      value={newUser.username}
+                      value={newUser.email}
                       onChange={handleInputChange}
                       required
                     />
