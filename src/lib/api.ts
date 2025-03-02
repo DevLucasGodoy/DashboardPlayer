@@ -122,7 +122,7 @@ export const contactsAPI = {
     return response.data;
   },
   getInactive: async () => {
-    const response = await api.get("/contatos/inativos/");
+    const response = await api.get("/contatos/inaltivos/");
     return response.data;
   },
   toggleStatus: async (contactId: string) => {
