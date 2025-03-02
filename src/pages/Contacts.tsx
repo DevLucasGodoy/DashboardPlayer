@@ -25,13 +25,6 @@ import { toast } from "sonner";
 import { PlusCircle, RefreshCw, Ban, Check } from "lucide-react";
 import StatusBadge from "@/components/common/StatusBadge";
 import PageTransition from "@/components/ui/PageTransition";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 interface ContactData {
   idtipo: string;
@@ -145,7 +138,8 @@ const ContactsPage: React.FC = () => {
                 <th className="py-3 px-4 text-left">ID do Tipo</th>
                 <th className="py-3 px-4 text-left">ID do Usuário</th>
                 <th className="py-3 px-4 text-left">Nome</th>
-                <th className="py-3 px-4 text-left">Valor</th>
+                <th className="py-3 px-4 text-left">Telefone</th>
+                <th className="py-3 px-4 text-left">Status</th>
                 <th className="py-3 px-4 text-right">Ações</th>
               </tr>
             </thead>
@@ -155,6 +149,7 @@ const ContactsPage: React.FC = () => {
                   <td className="py-3 px-4">{contact.idtipo}</td>
                   <td className="py-3 px-4">{contact.idusuario}</td>
                   <td className="py-3 px-4">{contact.nome}</td>
+                  <td className="py-3 px-4">{contact.valor}</td>
                   <td className="py-3 px-4">
                     <StatusBadge isActive={isActive} />
                   </td>
@@ -240,11 +235,11 @@ const ContactsPage: React.FC = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="valor">Valor</Label>
+                    <Label htmlFor="valor">Telefone</Label>
                     <Input
                       id="valor"
                       name="valor"
-                      placeholder="Valor"
+                      placeholder="Telefone"
                       value={newContact.valor}
                       onChange={handleInputChange}
                       required
