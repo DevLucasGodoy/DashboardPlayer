@@ -115,7 +115,6 @@ const TypesPage: React.FC = () => {
             <thead>
               <tr className="border-b bg-muted/50">
                 <th className="py-3 px-4 text-left">ID</th>
-                <th className="py-3 px-4 text-left">Nome</th>
                 <th className="py-3 px-4 text-left">Descrição</th>
                 <th className="py-3 px-4 text-left">Status</th>
                 <th className="py-3 px-4 text-right">Ações</th>
@@ -125,7 +124,6 @@ const TypesPage: React.FC = () => {
               {data.map((type) => (
                 <tr key={type.id} className="border-b hover:bg-muted/50">
                   <td className="py-3 px-4">{type.id}</td>
-                  <td className="py-3 px-4">{type.name}</td>
                   <td className="py-3 px-4">{type.descricao}</td>
                   <td className="py-3 px-4">
                     <StatusBadge isActive={isActive} />
@@ -178,17 +176,6 @@ const TypesPage: React.FC = () => {
               </DialogHeader>
               <form onSubmit={handleCreateType}>
                 <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Nome</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      placeholder="Nome do tipo"
-                      value={newType.name}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="descricao">Descrição</Label>
                     <Input
