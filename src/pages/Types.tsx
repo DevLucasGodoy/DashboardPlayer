@@ -29,7 +29,7 @@ import PageTransition from "@/components/ui/PageTransition";
 const TypesPage: React.FC = () => {
   const [newType, setNewType] = useState({
     name: "",
-    description: "",
+    descricao: "",
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -65,7 +65,7 @@ const TypesPage: React.FC = () => {
     mutationFn: typesAPI.create,
     onSuccess: () => {
       toast.success("Tipo criado com sucesso");
-      setNewType({ name: "", description: "" });
+      setNewType({ name: "", descricao: "" });
       setIsDialogOpen(false);
       refetchActiveTypes();
     },
@@ -73,7 +73,7 @@ const TypesPage: React.FC = () => {
 
   const handleCreateType = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newType.name || !newType.description) {
+    if (!newType.name || !newType.descricao) {
       toast.error("Preencha todos os campos");
       return;
     }
@@ -126,7 +126,7 @@ const TypesPage: React.FC = () => {
                 <tr key={type.id} className="border-b hover:bg-muted/50">
                   <td className="py-3 px-4">{type.id}</td>
                   <td className="py-3 px-4">{type.name}</td>
-                  <td className="py-3 px-4">{type.description}</td>
+                  <td className="py-3 px-4">{type.descricao}</td>
                   <td className="py-3 px-4">
                     <StatusBadge isActive={isActive} />
                   </td>
@@ -190,12 +190,12 @@ const TypesPage: React.FC = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="description">Descrição</Label>
+                    <Label htmlFor="descricao">Descrição</Label>
                     <Input
-                      id="description"
-                      name="description"
+                      id="descricao"
+                      name="descricao"
                       placeholder="Descrição do tipo"
-                      value={newType.description}
+                      value={newType.descricao}
                       onChange={handleInputChange}
                       required
                     />
