@@ -1,8 +1,7 @@
 import axios from "axios";
 import { toast } from "sonner";
 
-const API_BASE_URL = "https://entrevista-front-end.onrender.com";
-// const API_BASE_URL = process.env.API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
