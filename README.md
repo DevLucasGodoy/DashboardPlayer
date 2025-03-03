@@ -10,10 +10,10 @@ Siga estas etapas:
 
 ```sh
 # Etapa 1: Clone o repositório usando a URL do Git do projeto.
-git clone <SEU_URL_DO_GIT>
+git clone https://github.com/DevLucasGodoy/DashboardPlayer.git
 
 # Etapa 2: Navegue até o diretório do projeto.
-cd <NOME_DO_SEU_PROJETO>
+cd DashboardPlayer
 
 # Etapa 3: Instale as dependências necessárias.
 npm i
